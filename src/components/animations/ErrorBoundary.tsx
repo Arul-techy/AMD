@@ -1,4 +1,4 @@
-// Removed unused React import
+import React from 'react'
 
 type Props = {
   children: React.ReactNode
@@ -19,9 +19,9 @@ export default class ErrorBoundary extends React.Component<Props, State> {
     return { hasError: true, error }
   }
 
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
+  componentDidCatch(_error: Error, _info: React.ErrorInfo) {
     // You can add logging here (Sentry, LogRocket, etc.)
-    // console.error('Unhandled error caught by ErrorBoundary', error, info)
+    // console.error('Unhandled error caught by ErrorBoundary', _error, _info)
   }
 
   render() {

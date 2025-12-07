@@ -14,8 +14,8 @@ export default function FadeInSection({
   delay = 0,
   threshold = 0.08,
   once = true,
-}: Props): JSX.Element {
-  const ref = useRef<HTMLElement | null>(null)
+}: Props) {
+  const ref = useRef<HTMLDivElement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {

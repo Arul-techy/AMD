@@ -1,5 +1,5 @@
-// Removed unused React import
 import { useScrollAnimation } from '../../hooks/useScrollAnimation'
+import { memo } from 'react'
 
 type Metric = {
   id: string
@@ -47,30 +47,23 @@ const METRICS: Metric[] = [
   },
 ]
 
-<<<<<<< HEAD
-function ExperienceComponent(): JSX.Element {
-=======
-<<<<<<< HEAD
+
 function ExperienceComponent() {
-  const ref = useRef<HTMLLIElement | null>(null)
-  const [visible, setVisible] = useState<Record<string, boolean>>({})
-=======
-function ExperienceComponent() {
->>>>>>> fa6124d (new update)
   const headerRef = useScrollAnimation('opacity-100 translate-y-0', 'opacity-0 translate-y-8', { threshold: 0.1 })
 
   function MetricItem({ m }: { m: Metric }) {
-    const ref = useScrollAnimation('opacity-100 translate-y-0', 'opacity-0 translate-y-8', { threshold: 0.1 })
+    const animRef = useScrollAnimation('opacity-100 translate-y-0', 'opacity-0 translate-y-8', { threshold: 0.1 })
     return (
       <li
-        ref={ref}
+        ref={animRef as any}
         key={m.id}
         data-id={m.id}
-        className={`relative bg-white rounded-2xl overflow-hidden transform transition-all duration-600 will-change-transform opacity-0 translate-y-8`}
+        className={
+          'relative bg-white rounded-2xl overflow-hidden transform transition-all duration-600 will-change-transform opacity-0 translate-y-8'
+        }
         style={{ boxShadow: '0 6px 18px rgba(30, 58, 138, 0.04)' }}
       >
         <div className="h-1 bg-blue-primary w-full" />
-
         <div className="p-6 md:p-8">
           <div className="flex items-center justify-center mb-4">
             <div className="w-12 h-12 rounded-full bg-blue-secondary flex items-center justify-center text-white transform transition-transform duration-200 hover:scale-105">
@@ -80,7 +73,6 @@ function ExperienceComponent() {
               </svg>
             </div>
           </div>
-
           <div className="text-center">
             <div className="type-stat-lg text-2xl sm:text-3xl md:text-4xl text-neutral-dark-text">{m.number}</div>
             <div className="h4-style mt-2 text-base sm:text-lg text-neutral-dark-text">{m.title}</div>
@@ -94,11 +86,10 @@ function ExperienceComponent() {
   return (
     <section id="experience" className="py-12 md:py-20" style={{ backgroundColor: '#F8FAFC' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8" ref={headerRef}>
+        <div className="text-center mb-8" ref={headerRef as any}>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-neutral-dark-text">Why Partners Trust AMD.AI</h2>
           <p className="mt-2 text-sm sm:text-base text-neutral-text-gray">Proven capabilities backed by consistent delivery and expertise.</p>
         </div>
-
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {METRICS.map((m) => (
             <MetricItem key={m.id} m={m} />
@@ -109,4 +100,4 @@ function ExperienceComponent() {
   )
 }
 
-export default React.memo(ExperienceComponent)
+export default memo(ExperienceComponent)

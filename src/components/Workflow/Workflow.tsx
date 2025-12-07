@@ -1,4 +1,5 @@
-// Removed unused React import
+
+import React from 'react'
 import { useScrollAnimation } from '../../hooks/useScrollAnimation'
 
 function WorkflowComponent() {

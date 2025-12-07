@@ -1,4 +1,3 @@
-// Removed unused React import
 import { useScrollAnimation } from '../../hooks/useScrollAnimation'
 
 type USPItem = {
@@ -72,25 +71,22 @@ const ITEMS: USPItem[] = [
   },
 ]
 
-<<<<<<< HEAD
-export default function USP(): JSX.Element {
-=======
-export default function USP() {
->>>>>>> fa6124d (new update)
+function USP() {
   const headerRef = useScrollAnimation('opacity-100 translate-y-0', 'opacity-0 translate-y-8', { threshold: 0.1 })
 
-  function USPItem({ it, idx }: { it: typeof ITEMS[number]; idx: number }) {
-    const ref = useScrollAnimation('opacity-100 translate-y-0', 'opacity-0 translate-y-8', { threshold: 0.1 })
+  function USPItemComponent({ it, idx }: { it: typeof ITEMS[number]; idx: number }) {
+    const animRef = useScrollAnimation('opacity-100 translate-y-0', 'opacity-0 translate-y-8', { threshold: 0.1 })
     return (
       <li
-        ref={ref}
+        ref={animRef as any}
         key={it.id}
         data-id={it.id}
-        className={`relative bg-white rounded-2xl p-4 sm:p-6 shadow-sm overflow-hidden transform transition-all duration-600 will-change-transform opacity-0 translate-y-8`}
+        className={
+          'relative bg-white rounded-2xl p-4 sm:p-6 shadow-sm overflow-hidden transform transition-all duration-600 will-change-transform opacity-0 translate-y-8'
+        }
         style={{ animationDelay: `${idx * 100}ms` }}
       >
         <div className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-blue-secondary transition-colors duration-200" />
-
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0 text-neutral-dark-text">{it.Icon}</div>
           <div>
@@ -98,7 +94,6 @@ export default function USP() {
             <p className="text-body-xs mt-2 text-neutral-text-gray">{it.text}</p>
           </div>
         </div>
-
         <style>{`@media (hover: hover) { li:hover { transform: translateY(-6px); box-shadow: 0 8px 28px rgba(0,0,0,0.08); } }`}</style>
       </li>
     )
@@ -107,16 +102,18 @@ export default function USP() {
   return (
     <section id="usp" className="py-8 md:py-20 bg-neutral-light-gray">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div ref={headerRef} className="text-center mb-8 opacity-0 translate-y-8 transition-all duration-600 ease-[cubic-bezier(0.22,0.9,0.3,1)]">
+        <div ref={headerRef as any} className="text-center mb-8 opacity-0 translate-y-8 transition-all duration-600 ease-[cubic-bezier(0.22,0.9,0.3,1)]">
           <h2 className="h2-style text-2xl md:text-3xl text-neutral-dark-text">Why Choose AMD.AI</h2>
           <p className="text-body-sm mt-2 text-neutral-text-gray">Our strengths that help businesses grow faster.</p>
         </div>
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {ITEMS.map((it, idx) => (
-            <USPItem it={it} idx={idx} key={it.id} />
+            <USPItemComponent it={it} idx={idx} key={it.id} />
           ))}
         </ul>
       </div>
     </section>
   )
 }
+
+export default USP
