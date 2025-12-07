@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { FiMenu, FiX, FiChevronDown } from 'react-icons/fi'
-import { RAPTOR_MINI_ENABLED } from '../../config/featureFlags'
 
 const SERVICES = [
   'Translation & Localization',
@@ -12,29 +11,37 @@ const SERVICES = [
 ]
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
-  const mobileRef = useRef<HTMLDivElement | null>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    function onKey(e: KeyboardEvent) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+
+    const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setOpen(false)
+        setIsOpen(false)
         setServicesOpen(false)
       }
     }
-    function onClick(e: MouseEvent) {
-      const el = mobileRef.current
-      if (!el) return
-      if (open && !el.contains(e.target as Node)) setOpen(false)
+
+    if (isOpen) {
+      document.addEventListener('click', handleClickOutside)
+      document.addEventListener('keydown', handleEscape)
     }
-    window.addEventListener('keydown', onKey)
-    window.addEventListener('click', onClick)
+
     return () => {
-      window.removeEventListener('keydown', onKey)
-      window.removeEventListener('click', onClick)
+      document.removeEventListener('click', handleClickOutside)
+      document.removeEventListener('keydown', handleEscape)
     }
-  }, [open])
+  }, [isOpen])
+
+  const closeMenu = () => setIsOpen(false)
+  const toggleMenu = () => setIsOpen(!isOpen)
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md border-b border-neutral-medium-gray">
@@ -42,21 +49,12 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex-shrink-0 flex items-center gap-3">
-              <a href="#" className="inline-flex items-center gap-2 group">
+            <div className="flex-shrink-0">
+              <a href="#" className="inline-flex items-center gap-0 group">
                 <span className="font-heading text-2xl font-bold tracking-tighter bg-gradient-to-r from-blue-secondary to-blue-primary bg-clip-text text-transparent group-hover:from-blue-primary group-hover:to-blue-secondary transition-all duration-300">
-                  AMD
-                </span>
-                <span className="font-heading text-2xl font-bold text-blue-secondary group-hover:text-blue-primary transition-colors">
-                  .AI
+                  AMD.AI
                 </span>
               </a>
-
-              {RAPTOR_MINI_ENABLED && (
-                <span className="inline-flex items-center text-xs font-semibold text-blue-secondary bg-blue-secondary/10 px-2 py-1 rounded-full">
-                  Raptor mini (Preview)
-                </span>
-              )}
             </div>
 
             {/* Desktop Navigation */}
@@ -113,21 +111,24 @@ export default function Navbar() {
 
               {/* Mobile Menu Button */}
               <button
-                className="md:hidden inline-flex items-center justify-center p-2 text-neutral-dark-text hover:text-blue-secondary transition-colors"
+                type="button"
+                className="md:hidden inline-flex items-center justify-center p-2 text-neutral-dark-text hover:text-blue-secondary transition-colors duration-200"
                 aria-label="Toggle mobile menu"
-                aria-expanded={open}
-                onClick={() => setOpen(!open)}
+                aria-expanded={isOpen}
+                aria-controls="mobile-menu"
+                onClick={toggleMenu}
               >
-                {open ? <FiX size={24} /> : <FiMenu size={24} />}
+                {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
               </button>
             </div>
           </div>
 
           {/* Mobile Menu */}
-          {open && (
+          {isOpen && (
             <div
-              ref={mobileRef}
-              className="md:hidden bg-white/95 backdrop-blur-md border-t border-neutral-medium-gray rounded-b-2xl animate-slideUp"
+              ref={menuRef}
+              id="mobile-menu"
+              className="md:hidden bg-white/95 backdrop-blur-md border-t border-neutral-medium-gray animate-in fade-in duration-200"
               style={{ backgroundColor: 'rgba(255,255,255,0.95)' }}
             >
               <div className="px-4 py-4 space-y-3">
@@ -136,32 +137,31 @@ export default function Navbar() {
                     key={link}
                     href={`#${link.toLowerCase()}`}
                     className="block px-4 py-2 text-sm font-medium text-neutral-dark-text hover:text-blue-secondary hover:bg-blue-primary/5 rounded-lg transition-all duration-200"
-                    onClick={() => setOpen(false)}
+                    onClick={closeMenu}
                   >
                     {link}
                   </a>
                 ))}
 
-                  <div className="border-t border-neutral-medium-gray/20 pt-3 mt-3">
+                <div className="border-t border-neutral-medium-gray/20 pt-3 mt-3">
                   <button
-                      className="w-full text-left px-4 py-2 text-sm font-medium text-neutral-dark-text hover:text-blue-secondary flex items-center justify-between transition-colors"
+                    type="button"
+                    className="w-full text-left px-4 py-2 text-sm font-medium text-neutral-dark-text hover:text-blue-secondary flex items-center justify-between transition-colors duration-200"
+                    aria-expanded={servicesOpen}
                     onClick={() => setServicesOpen(!servicesOpen)}
                   >
                     Services
-                    <FiChevronDown className={`w-4 h-4 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
+                    <FiChevronDown className={`w-4 h-4 transition-transform duration-300 ${servicesOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {servicesOpen && (
-                    <div className="pl-4 mt-2 space-y-1 border-l-2 border-blue-secondary">
+                    <div className="pl-4 mt-2 space-y-1 border-l-2 border-blue-secondary animate-in fade-in slide-in-from-left-4 duration-200">
                       {SERVICES.map((service) => (
                         <a
                           key={service}
                           href="#services"
-                          className="block px-4 py-1.5 text-xs font-medium text-neutral-dark-text hover:text-blue-secondary transition-colors"
-                          onClick={() => {
-                            setOpen(false)
-                            setServicesOpen(false)
-                          }}
+                          className="block px-4 py-1.5 text-xs font-medium text-neutral-dark-text hover:text-blue-secondary transition-colors duration-200"
+                          onClick={closeMenu}
                         >
                           {service}
                         </a>
@@ -173,7 +173,7 @@ export default function Navbar() {
                 <a
                   href="#contact"
                   className="block w-full px-4 py-2 mt-4 luxe-btn-primary text-center text-sm"
-                  onClick={() => setOpen(false)}
+                  onClick={closeMenu}
                 >
                   Get Started
                 </a>
