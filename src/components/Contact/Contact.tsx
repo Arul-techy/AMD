@@ -26,8 +26,8 @@ export default function Contact() {
     {
       icon: FiLinkedin,
       label: 'LinkedIn',
-      value: 'AMD Translation',
-      href: 'https://linkedin.com/company/amdtranslation',
+      value: 'AMD.AI',
+      href: 'https://linkedin.com/company/amdai',
       external: true,
     },
   ]

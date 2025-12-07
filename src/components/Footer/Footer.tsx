@@ -104,7 +104,7 @@ export default function Footer() {
               </li>
 
               <li>
-                <a className="inline-flex items-center gap-3 text-white/90 hover:text-blue-secondary transition-colors duration-300" href="https://linkedin.com/company/amdtranslation" target="_blank" rel="noopener noreferrer" aria-label="AMD.AI on LinkedIn">
+                <a className="inline-flex items-center gap-3 text-white/90 hover:text-blue-secondary transition-colors duration-300" href="https://linkedin.com/company/amdai" target="_blank" rel="noopener noreferrer" aria-label="AMD.AI on LinkedIn">
                   <span className={iconWrap} aria-hidden="true">
                     {/* LinkedIn SVG */}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +113,7 @@ export default function Footer() {
                       <circle cx="4" cy="5" r="1.5" stroke="currentColor" strokeWidth="1.2" />
                     </svg>
                   </span>
-                  <span>linkedin.com/company/amdtranslation</span>
+                  <span>linkedin.com/company/amdai</span>
                 </a>
               </li>
             </ul>
